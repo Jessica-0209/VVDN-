@@ -2,7 +2,7 @@
 
 int binary[64] = {0}; 
 
-void count_bits(int num_bits)
+void count_bits(const int num_bits)
 {
     int count_0 = 0;
     int count_1 = 0;
