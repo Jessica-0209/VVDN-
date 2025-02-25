@@ -4,11 +4,11 @@
 
 typedef unsigned int uint;
 
-void printBinary(uint num, const int num_bits)
+void printBinary(uint n, const int num_bits)
 {
     for (int i = num_bits - 1; i >= 0; i--)
     {
-        printf("%d", (num >> i) & 1);
+        printf("%d", (n >> i) & 1);
         if (i % 4 == 0)
         {
             printf(" ");

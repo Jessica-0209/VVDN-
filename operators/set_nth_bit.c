@@ -2,7 +2,7 @@
 
 typedef unsigned int uint;
 
-void printBinary(unsigned int n, const int num_bits)
+void printBinary(uint n, const int num_bits)
 {
     for (int i = num_bits - 1; i >= 0; i--)
     {
