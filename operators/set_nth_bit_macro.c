@@ -1,11 +1,8 @@
 #include<stdio.h>
 
-#define set_bit(value, pos) (value |= (2U << pos))
+#define set_bit(value, pos) (value | (1 << pos))
 
 typedef unsigned int uint;
-
-const int num_bits = sizeof(int) * 8;
-
 
 void printBinary(uint num, const int num_bits)
 {
@@ -23,6 +20,7 @@ int main()
 {
 	uint value = 0;
 	uint pos = 0;
+	const int num_bits = sizeof(int) * 8;
 
 	printf("Enter value: ");
 	scanf("%u", &value);
@@ -41,7 +39,7 @@ int main()
 
 	value = set_bit(value, pos);
 
-	printf("\nBinary of %u: ", value);
+	printf("\nBinary after setting bit: ");
         printBinary(value, num_bits);
 
 
