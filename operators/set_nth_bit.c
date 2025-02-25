@@ -2,15 +2,15 @@
 
 typedef unsigned int uint;
 
-void printBinary(unsigned int num)
+void printBinary(unsigned int n, const int num_bits)
 {
-    for (int i = 31; i >= 0; i--)
+    for (int i = num_bits - 1; i >= 0; i--)
     {
-        printf("%d", (num >> i) & 1);
+        printf("%d", (n >> i) & 1);
         if (i % 4 == 0)
         {
             printf(" ");
-	}
+        }
     }
 }
 
@@ -26,7 +26,7 @@ int main()
 	const int num_bits = sizeof(int) * 8;
 
 	printf("cData: ");
-	printBinary(cData);
+	printBinary(cData, num_bits);
 	printf("\n");
 
 	printf("Enter the position to be set: ");
@@ -40,7 +40,7 @@ int main()
 	cData = set_bit(cData, pos);
 
 	printf("%dth bit set.\nNow cData will be: ", pos);
-	printBinary(cData);
+	printBinary(cData, num_bits);
 	printf("\n");
 
 	return 0;

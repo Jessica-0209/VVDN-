@@ -1,6 +1,6 @@
 #include<stdio.h>
 
-#define set_bit(value, pos) (value |= (1U << pos))
+#define set_bit(value, pos) (value |= (2U << pos))
 
 typedef unsigned int uint;
 
