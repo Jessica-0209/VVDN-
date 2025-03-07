@@ -10,7 +10,7 @@ int main()
 	*ptr = 45;
 
 	printf("Value stored dynamically: %d\n", *ptr);
-
+	
 	free(ptr);
 
 	return 0;
