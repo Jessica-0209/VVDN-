@@ -1,6 +1,6 @@
 #include <stdio.h>
 
-#define IS_BIT_SET(value, pos) (value & (1U<< pos))
+#define IS_BIT_SET(value, pos) (value & (1 << pos))
 
 typedef unsigned int uint;
 
