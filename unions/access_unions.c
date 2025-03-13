@@ -14,13 +14,18 @@ int main()
 	printf("Access variable:\n\n");
 	
 	strcpy(book1.name, "Southern Lights");
-	printf("Book name: %s\n", book1.name);
+	//printf("Book name: %s\n", book1.name);
 
 	strcpy(book1.author, "Danielle Steel");
-	printf("Author name: %s\n", book1.author);
+	//printf("Author name: %s\n", book1.author);
 
 	book1.price = 499;
+
+	printf("Book name: %s\n", book1.name);
+	printf("Author name: %s\n", book1.author);
 	printf("Price of book: %.2f\n", book1.price);
+
+	printf("THIS IS WHY WE DONT USE UNIONS FOR SUCH CASES. USE THEM ONLY IF YOU NEED TO STORE VALUES SEPARATELY AS EACH VARIABLE USE THE SAME MEMORY SPACE!!!");
 
 	printf("\n\nAccess pointer:\n\n");
 
