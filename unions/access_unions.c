@@ -24,4 +24,24 @@ int main()
 
 	printf("\n\nAccess pointer:\n\n");
 
-	book2 = 
+	book2 = malloc(sizeof(union Book));
+	if(book2 == NULL)
+	{
+		printf("Failed to allocate memory");
+		return -1;
+	}
+
+	strcpy(book2->name, "Kill the Father");
+        printf("Book name: %s\n", book2->name);
+
+        strcpy(book2->author, "Sandori Dazienori");
+        printf("Author name: %s\n", book2->author);
+
+        book2->price = 799;
+        printf("Price of book: %.2f\n", book2->price);
+
+	free(book2);
+	book2 = NULL;
+
+	return 0;
+}
