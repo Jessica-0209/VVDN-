@@ -13,9 +13,9 @@ int main()
 	struct Node* second = NULL;
 	struct Node* third = NULL;
 
-	head = (struct Node*) malloc(sizeof(struct Node));
-	second = (struct Node*) malloc(sizeof(struct Node));
-	third = (struct Node*) malloc(sizeof(struct Node));
+	head = malloc(sizeof(struct Node));
+	second = malloc(sizeof(struct Node));
+	third = malloc(sizeof(struct Node));
 
 	head->data = 10;
 	head->next = second;

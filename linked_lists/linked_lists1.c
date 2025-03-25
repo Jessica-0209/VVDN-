@@ -7,7 +7,7 @@ struct Node
 	struct Node* next;
 };
 
-typedef struct Node Ntype, *Npointer;
+typedef struct Node Ntype;
 
 void print_list(struct Node *pNode)
 {
@@ -21,11 +21,11 @@ void print_list(struct Node *pNode)
 
 int main()
 {
-	Npointer head = NULL;
-	Npointer node1 = NULL;
-	Npointer node2 = NULL;
-	Npointer node3 = NULL;
-	Npointer node4 = NULL;
+	struct Node* head = NULL;
+	struct Node* node1 = NULL;
+	struct Node* node2 = NULL;
+	struct Node* node3 = NULL;
+	struct Node* node4 = NULL;
 
 	node1 = malloc(sizeof(Ntype));
 	node2 = malloc(sizeof(Ntype));
