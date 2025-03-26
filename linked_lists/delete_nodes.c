@@ -8,6 +8,8 @@ struct Node
 };
 
 typedef struct Node node, *np;
+	
+void remove_duplicates(np *head);
 
 int count_node(np *head)
 {
@@ -54,6 +56,7 @@ void create_list(np *head, int n)
 
 }
 
+/*
 void remove_duplicates(np *head)
 {
     np current = *head;
@@ -78,7 +81,7 @@ void remove_duplicates(np *head)
         current = current->next;
     }
 }
-
+*/
 void print_list(np *head)
 {
 	np temp = *head;
@@ -89,7 +92,7 @@ void print_list(np *head)
 		return;
 	}
 
-	remove_duplicates(head);
+	//remove_duplicates(head);
 
 	printf("Linked List: ");
 	while(temp->next != NULL)
@@ -130,6 +133,8 @@ void print_reverse(np *head)
         	return;
     	}
 
+	printf("Linked list: ");
+	print_list(head);
     	printf("Reversed Linked List: ");
     	reverse_list(head);
 	
@@ -234,7 +239,8 @@ int main()
         	printf("5. Print list\n");
 		printf("6. Print list in reverse\n");
 		printf("7. Total number of nodes\n");
-        	printf("8. Exit\n");
+		printf("8. remove duplicates\n");
+        	printf("9. Exit\n");
         	printf("Enter your choice: ");
         	scanf("%d", &choice);
 
@@ -266,6 +272,9 @@ int main()
 				printf("Total number of nodes = %d\n", count_node(&head));
 				break;
 			case 8:
+				remove_duplicates(&head);
+				break;
+			case 9:
 				printf("Exit!\n");
 				return 0;
 			default:
@@ -273,3 +282,29 @@ int main()
 		}
 	}
 }
+
+void remove_duplicates(np *head)
+{
+    np current = *head;
+
+    while (current != NULL)
+    {
+        np check_dup = current;  //pointer to check for duplicates
+
+        while (check_dup->next != NULL)
+        {
+            if (check_dup->next->data == current->data)
+            {
+                np temp = check_dup->next;
+                check_dup->next = check_dup->next->next;
+                free(temp);
+            }
+            else
+            {
+                check_dup = check_dup->next;
+            }
+        }
+        current = current->next;
+    }
+}
+
