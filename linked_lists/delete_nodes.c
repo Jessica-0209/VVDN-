@@ -54,14 +54,42 @@ void create_list(np *head, int n)
 
 }
 
-void print_list(np *head, int n)
+void remove_duplicates(np *head)
+{
+    np current = *head;
+
+    while (current != NULL)
+    {
+        np check_dup = current;  //pointer to check for duplicates
+
+        while (check_dup->next != NULL)
+        {
+            if (check_dup->next->data == current->data)
+            {
+                np temp = check_dup->next;
+                check_dup->next = check_dup->next->next;
+                free(temp);
+            }
+            else
+            {
+                check_dup = check_dup->next;
+            }
+        }
+        current = current->next;
+    }
+}
+
+void print_list(np *head)
 {
 	np temp = *head;
+	
 	if(*head == NULL)
 	{
 		printf("List is empty!\n");
 		return;
 	}
+
+	remove_duplicates(head);
 
 	printf("Linked List: ");
 	while(temp->next != NULL)
@@ -69,12 +97,51 @@ void print_list(np *head, int n)
 		printf("%d -> ", temp->data);
 		temp = temp->next;
 	}
-
-	printf("%d\n", temp->data); 
-	printf("Last node = %d\n", temp->data);
+	printf("%d -> ", temp->data);
 
 	printf("NULL\n");
 
+	printf("Last node = %p\n", (void*)temp);
+
+}
+
+void reverse_list(np *head) 
+{
+    	np prev = NULL;
+    	np current = *head;
+    	np next = NULL;
+
+    	while (current != NULL) 
+	{
+        	next = current->next;
+        	current->next = prev;
+        	prev = current;
+        	current = next;
+    	}
+   	*head = prev;
+}
+
+void print_reverse(np *head) 
+{
+
+	if (*head == NULL) 
+	{
+        	printf("List is empty!\n");
+        	return;
+    	}
+
+    	printf("Reversed Linked List: ");
+    	reverse_list(head);
+	
+	np temp = *head;
+	while (temp != NULL) 
+	{
+        	printf("%d -> ", temp->data);
+        	temp = temp->next;
+    	}
+    	printf("NULL\n");
+   
+        reverse_list(head); //doing this to reverse the list back to original
 }
 
 void delete_front(np *head)
@@ -165,8 +232,9 @@ int main()
         	printf("3. Delete from end\n");
         	printf("4. Delete at position\n");
         	printf("5. Print list\n");
-		printf("6. Total number of nodes\n");
-        	printf("7. Exit\n");
+		printf("6. Print list in reverse\n");
+		printf("7. Total number of nodes\n");
+        	printf("8. Exit\n");
         	printf("Enter your choice: ");
         	scanf("%d", &choice);
 
@@ -189,12 +257,15 @@ int main()
 				delete_at_position(&head, pos);
 				break;
 			case 5:
-				print_list(&head, n);
+				print_list(&head);
 				break;
 			case 6:
-				printf("Total number of nodes = %d\n", count_node(&head));
+				print_reverse(&head);
 				break;
 			case 7:
+				printf("Total number of nodes = %d\n", count_node(&head));
+				break;
+			case 8:
 				printf("Exit!\n");
 				return 0;
 			default:
