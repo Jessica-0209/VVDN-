@@ -26,7 +26,7 @@ int main()
 	{
 		printf("Strings are equal!\n");
 	}
-	else if(result < 1)
+	else if(result < 0)
 	{
 		printf("String1 is smaller than string2!\n");
 	}
