@@ -5,7 +5,7 @@ void str_copy(char *dest, const char * src)
 	while(*src != '\0')
 	{
 		*dest = *src;
-		*src++;
+		*src++;  //try to understand this again after you're done with all
 		*dest++;
 	}
 	*dest = '\0';
