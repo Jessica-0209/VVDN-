@@ -1,0 +1,14 @@
+[0;1;32m●[0m mosquitto.service - Mosquitto MQTT v3.1/v3.1.1 Broker
+     Loaded: loaded (/lib/systemd/system/mosquitto.service; enabled; vendor preset: enabled)
+     Active: [0;1;32mactive (running)[0m since Fri 2025-04-04 15:59:26 IST; 1min 6s ago
+       Docs: man:mosquitto.conf(5)
+             man:mosquitto(8)
+   Main PID: 15074 (mosquitto)
+      Tasks: 3 (limit: 9106)
+     Memory: 1.0M
+     CGroup: /system.slice/mosquitto.service
+             └─15074 /usr/sbin/mosquitto -c /etc/mosquitto/mosquitto.conf
+
+Apr 04 15:59:26 27808--IOT--BLR systemd[1]: Starting Mosquitto MQTT v3.1/v3.1.1 Broker...
+Apr 04 15:59:26 27808--IOT--BLR mosquitto[15074]: [23716.529730]~DLT~15074~INFO     ~FIFO /tmp/dlt cannot be opened. Retrying later...
+Apr 04 15:59:26 27808--IOT--BLR systemd[1]: Started Mosquitto MQTT v3.1/v3.1.1 Broker.
