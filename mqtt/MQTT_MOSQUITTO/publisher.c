@@ -4,7 +4,7 @@
 #include <mosquitto.h>
 
 #define MQTT_HOST "localhost"
-#define MQTT_PORT 1883
+#define MQTT_PORT 1883 
 #define MQTT_TOPIC "test/topic"
 
 int main()

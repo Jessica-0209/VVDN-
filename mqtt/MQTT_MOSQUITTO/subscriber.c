@@ -6,21 +6,9 @@
 #define MQTT_PORT 1883
 #define MQTT_TOPIC "test/topic"
 
-void on_connect(struct mosquitto *mosq, void *obj, int result)
+void on_message(struct mosquitto *mosq, void *userdata, const struct mosquitto_message *msg)
 {
-    if(result)
-    {
-        printf("Failed to connect to MQTT broker!\n");
-        exit(1);
-    }
-    printf("Connected to MQTT broker\n");
-    
-    mosquitto_subscribe(mosq, NULL, MQTT_TOPIC, 1);
-}
-
-void on_message(struct mosquitto *mosq, void *obj, const struct mosquitto_message *message)
-{
-    printf("Received message on topic %s: %s\n", message->topic, (char *)message->payload);
+    printf("Received message on topic %s: %s\n", msg->topic, (char *)msg->payload);
 }
 
 int main()
@@ -34,7 +22,6 @@ int main()
         return 1;
     }
 
-    mosquitto_connect_callback_set(mosq, on_connect);
     mosquitto_message_callback_set(mosq, on_message);
 
     if(mosquitto_connect(mosq, MQTT_HOST, MQTT_PORT, 60))
@@ -43,14 +30,13 @@ int main()
         return 1;
     }
 
-    mosquitto_loop_start(mosq);
-    
-    printf("Press Enter to exit...\n");
-    getchar();
+    mosquitto_subscribe(mosq, NULL, MQTT_TOPIC, 1);
+    printf("Connected to MQTT broker, subscribed to topic: %s\n", MQTT_TOPIC);
+
+    mosquitto_loop_forever(mosq, -1, 1);
 
     mosquitto_destroy(mosq);
     mosquitto_lib_cleanup();
-    
     return 0;
 }
 
