@@ -16,7 +16,7 @@ int port;
 char username[20];
 char password[20];
 
-int get_next_line(FILE *fp, char *dest, size_t size) {
+int get_next_line(FILE *fp, char *dest, size_t size, const char *field_name) {
         while (fgets(dest, size, fp)) {
                 if (dest[0] == '#' || dest[0] == '\n') {
                         continue;
@@ -24,6 +24,8 @@ int get_next_line(FILE *fp, char *dest, size_t size) {
                 dest[strcspn(dest, "\n")] = 0;
                 return 1;
         }
+
+	fprintf(stderr, "Error: Missing or commented out: %s\n", field_name);  
         return 0;
 }
 
@@ -38,28 +40,24 @@ void read_configuration()
 
         char port_line[100];
 
-        if (!get_next_line(fp, broker_address, sizeof(broker_address)))
+        if (!get_next_line(fp, broker_address, sizeof(broker_address), "broker address"))
         {
-                fprintf(stderr, "Error reading broker address\n");
                 exit(1);
         }
 
-        if (!get_next_line(fp, port_line, sizeof(port_line)))
+        if (!get_next_line(fp, port_line, sizeof(port_line), "port"))
         {
-                fprintf(stderr, "Error reading port\n");
                 exit(1);
         }
         port = atoi(port_line);
 
-        if (!get_next_line(fp, username, sizeof(username)))
+        if (!get_next_line(fp, username, sizeof(username), "username"))
         {
-                fprintf(stderr, "Error reading username\n");
                 exit(1);
         }
 
-        if (!get_next_line(fp, password, sizeof(password)))
+        if (!get_next_line(fp, password, sizeof(password), "password"))
         {
-                fprintf(stderr, "Error reading password\n");
                 exit(1);
         }
 

@@ -1,4 +1,5 @@
-192.168.50.47
+#192.168.50.47
+localhost
 1883
 myuser
 jessica
