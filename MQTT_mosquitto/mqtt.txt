@@ -1,6 +1,5 @@
-#192.168.50.47
-localhost
-1883
-myuser
-jessica
-#user
+BROKER_ADDRESS=192.168.50.47
+#BROKER_ADDRESS=192.168.50.103
+PORT=1883
+USERNAME=myuser
+PASSWORD=jessica

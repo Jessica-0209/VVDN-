@@ -2,132 +2,96 @@
 #include <mosquitto.h>
 #include <stdlib.h>
 #include <string.h>
-//#include "mqtt.h"
 
-//#define BROKER_ADDRESS "192.168.85.149"
-//#define PORT 1883
 #define MQTT "mqtt.txt"
 #define TOPIC "jessica/demo"
-#define USERNAME "myuser"
-#define PASSWORD "jessica"
+//#define CLIENT_ID "jess_sub_01"
 
-char broker_address[100];
-int port;
-char username[20];
-char password[20];
-
-int get_next_line(FILE *fp, char *dest, size_t size, const char *field_name) {
-        while (fgets(dest, size, fp)) {
-                if (dest[0] == '#' || dest[0] == '\n') {
-                        continue;
-                }
-                dest[strcspn(dest, "\n")] = 0;
-                return 1;
-        }
-
-	fprintf(stderr, "Error: Missing or commented out: %s\n", field_name);  
-        return 0;
-}
-
-void read_configuration()
+typedef struct
 {
-        FILE *fp = fopen("mqtt.txt", "r");
-        if (!fp)
-        {
-                perror("Failed to open config file");
-                exit(1);
-        }
+	char broker_address[100];
+	int port;
+	char username[50];
+	char password[50];
+} Config;
 
-        char port_line[100];
+Config config = {"",0,"",""};
 
-        if (!get_next_line(fp, broker_address, sizeof(broker_address), "broker address"))
-        {
-                exit(1);
-        }
+void read_configuration(const char *filename) {
 
-        if (!get_next_line(fp, port_line, sizeof(port_line), "port"))
-        {
-                exit(1);
-        }
-        port = atoi(port_line);
-
-        if (!get_next_line(fp, username, sizeof(username), "username"))
-        {
-                exit(1);
-        }
-
-        if (!get_next_line(fp, password, sizeof(password), "password"))
-        {
-                exit(1);
-        }
-
-        fclose(fp);
-}
-
-/*int get_next_line() {
-	FILE *fp = fopen("mqtt.txt", "r");
-	if(!fp)
-	{
-		fprintf(stderr, "Failed to open config file!\n");
-		exit(1);
-	}
-	char *dest[100];
-	int size;
-    	while (fgets(dest, size, fp)) {
-        	if (dest[0] == '#' || dest[0] == '\n') {
-            		continue;  
-        	}
-        	dest[strcspn(dest, "\n")] = 0;  
-        	return 1;  
-	}
-    	return 0;  
-}
-
-void read_configuration() 
-{
-    	FILE *fp = fopen("mqtt.txt", "r");
-    	if (!fp)
+    	FILE *fp = fopen(filename, "r");
+    	if (!fp) 
     	{
         	perror("Failed to open config file");
         	exit(1);
     	}
 
-	get_next_line();
-	char port_line[100];
+    	char line[256] = {0};
+    	while (fgets(line, sizeof(line), fp)) {
+               	if (line[0] == '#' || line[0] == '\n')
+		{
+			continue;
+		}
 
-    	if (fgets(broker_address, sizeof(broker_address), fp) == NULL) 
-    	{
-        	fprintf(stderr, "Error reading broker address\n");
-        	exit(1);
-    	}
+        	line[strcspn(line, "\n")] = 0; // remove newline
+	
+        	char *key = strtok(line, "=");
+        	char *value = strtok(NULL, "=");
 
-    	if (fgets(port_line, sizeof(port_line), fp) == NULL) 
-    	{
-        	fprintf(stderr, "Error reading port\n");
-        	exit(1);
-    	}
-	port = atoi(port_line);
-    	
-    	if (fgets(username, sizeof(username), fp) == NULL) 
-    	{
-        	fprintf(stderr, "Error reading username\n");
-        	exit(1);
-    	}
+        	if (!key || !value)
+		{
+			continue;
+		}	
 
-    	if (fgets( password, sizeof(password), fp) == NULL) 
-	{
-        	fprintf(stderr, "Error reading password\n");
-        	exit(1);
+        	if (strcmp(key, "BROKER_ADDRESS") == 0) 
+		{
+            		strncpy(config.broker_address, value, sizeof(config.broker_address));
+        	}	 	
+		else if (strcmp(key, "PORT") == 0) 
+		{
+            		config.port = atoi(value);
+        	} 
+		else if (strcmp(key, "USERNAME") == 0) 
+		{
+            		strncpy(config.username, value, sizeof(config.username));
+        	}	
+       		else if (strcmp(key, "PASSWORD") == 0) 
+		{
+            		strncpy(config.password, value, sizeof(config.password));
+        	}
     	}
 
     	fclose(fp);
-}*/
+
+    
+    	if (strlen(config.broker_address) == 0) 
+    	{
+        	fprintf(stderr, "Missing BROKER_ADDRESS in config file\n");
+        	exit(1);
+    	}
+    	if (config.port == 0) 
+    	{
+        	fprintf(stderr, "Missing or invalid BROKER_PORT in config file\n");
+        	exit(1);
+    	}
+    	if (strlen(config.username) == 0) 
+    	{
+        	fprintf(stderr, "Missing USERNAME in config file\n");
+        	exit(1);
+    	}
+    	if (strlen(config.password) == 0) 
+    	{
+        	fprintf(stderr, "Missing PASSWORD in config file\n");
+        	exit(1);
+    	}
+}
 
 void on_connect(struct mosquitto *mosq, void *userdata, int result) 
 {
 	if (result == MOSQ_ERR_SUCCESS) {
         printf("✅ Connected to broker successfully!\n");
         mosquitto_subscribe(mosq, NULL, TOPIC, 1);
+	printf("Subscribed to topic: %s\n", TOPIC);
     	} 
 	else 
 	{
@@ -143,7 +107,6 @@ void on_message(struct mosquitto *mosq, void *userdata, const struct mosquitto_m
 
 int main() 
 {
-	read_configuration();
     	struct mosquitto *mosq;
     	int ret;
 	
@@ -155,19 +118,19 @@ int main()
         	fprintf(stderr, "❌ Failed to create Mosquitto instance\n");
         	return 1;
     	}
+	read_configuration("mqtt.txt");
 
-    	mosquitto_username_pw_set(mosq, username, password);
+    	mosquitto_username_pw_set(mosq, config.username, config.password);
 
     	mosquitto_connect_callback_set(mosq, on_connect);
     	mosquitto_message_callback_set(mosq, on_message);
 	
-    	ret = mosquitto_connect(mosq, broker_address, port, 60);
+    	ret = mosquitto_connect(mosq, config.broker_address, config.port, 60);
     	if (ret != MOSQ_ERR_SUCCESS) 
 	{
         	fprintf(stderr, "❌ Connection failed: %s\n", mosquitto_strerror(ret));
         	return 1;
     	}
-
     	printf("📡 Connecting to MQTT broker...\n");
 
     	mosquitto_loop_forever(mosq, -1, 1);
@@ -177,4 +140,3 @@ int main()
 
     	return 0;
 }
-
