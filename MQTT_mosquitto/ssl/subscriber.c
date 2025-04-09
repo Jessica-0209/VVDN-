@@ -6,19 +6,24 @@
 #define MQTT "mqtt.txt"
 #define TOPIC "jessica/demo"
 //#define CLIENT_ID "jess_sub_01"
-#define CA_FILE "/home/vvsa/VVDN_Git/VVDN-/MQTT_mosquitto/ssl/certs/ca.crt"
+#define CA_FILE "/home/vvsa/VVDN-/MQTT_mosquitto/ssl/certs/ca.crt"
 
 typedef struct
 {
 	char broker_address[100];
 	int port;
-	char username[50];
-	char password[50];
+	//char username[50];
+	//char password[50];
 } Config;
 
-Config config = {"",0,"",""};
+Config config = {
+	.broker_address = "",
+	.port = 0,
+	//.username = "",
+	//.password = ""
+};
 
-/*void read_configuration(const char *filename) {
+void read_configuration(const char *filename) {
 
     	FILE *fp = fopen(filename, "r");
     	if (!fp) 
@@ -52,14 +57,14 @@ Config config = {"",0,"",""};
 		{
             		config.port = atoi(value);
         	} 
-		else if (strcmp(key, "USERNAME") == 0) 
+		/*else if (strcmp(key, "USERNAME") == 0) 
 		{
             		strncpy(config.username, value, sizeof(config.username));
         	}	
        		else if (strcmp(key, "PASSWORD") == 0) 
 		{
             		strncpy(config.password, value, sizeof(config.password));
-        	}
+        	}*/
     	}
 
     	fclose(fp);
@@ -75,7 +80,7 @@ Config config = {"",0,"",""};
         	fprintf(stderr, "Missing or invalid BROKER_PORT in config file\n");
         	exit(1);
     	}
-    	if (strlen(config.username) == 0) 
+    	/*if (strlen(config.username) == 0) 
     	{
         	fprintf(stderr, "Missing USERNAME in config file\n");
         	exit(1);
@@ -84,8 +89,8 @@ Config config = {"",0,"",""};
     	{
         	fprintf(stderr, "Missing PASSWORD in config file\n");
         	exit(1);
-    	}
-}*/
+    	}*/
+}
 
 void on_connect(struct mosquitto *mosq, void *userdata, int result) 
 {
@@ -119,7 +124,7 @@ int main()
         	fprintf(stderr, "❌ Failed to create Mosquitto instance\n");
         	return 1;
     	}
-	//read_configuration("mqtt.txt");
+	read_configuration("mqtt.txt");
 
 	ret = mosquitto_tls_set(mosq, CA_FILE, NULL, NULL, NULL, NULL);
     	if (ret != MOSQ_ERR_SUCCESS) 
@@ -133,7 +138,7 @@ int main()
     	mosquitto_connect_callback_set(mosq, on_connect);
     	mosquitto_message_callback_set(mosq, on_message);
 	
-    	ret = mosquitto_connect(mosq, "localhost", 8883, 60);
+    	ret = mosquitto_connect(mosq, config.broker_address, config.port, 60);
     	if (ret != MOSQ_ERR_SUCCESS) 
 	{
         	fprintf(stderr, "❌ Connection failed: %s\n", mosquitto_strerror(ret));
