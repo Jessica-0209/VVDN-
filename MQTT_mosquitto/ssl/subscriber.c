@@ -12,19 +12,19 @@ typedef struct
 {
 	char broker_address[100];
 	int port;
-	//char username[50];
-	//char password[50];
+	char username[50];
+	char password[50];
 } Config;
 
 Config config = {
 	.broker_address = "",
 	.port = 0,
-	//.username = "",
-	//.password = ""
+	.username = "",
+	.password = ""
 };
 
-void read_configuration(const char *filename) {
-
+int read_configuration(const char *filename) 
+{
     	FILE *fp = fopen(filename, "r");
     	if (!fp) 
     	{
@@ -33,7 +33,8 @@ void read_configuration(const char *filename) {
     	}
 
     	char line[256] = {0};
-    	while (fgets(line, sizeof(line), fp)) {
+    	while (fgets(line, sizeof(line), fp)) 
+	{
                	if (line[0] == '#' || line[0] == '\n')
 		{
 			continue;
@@ -57,14 +58,14 @@ void read_configuration(const char *filename) {
 		{
             		config.port = atoi(value);
         	} 
-		/*else if (strcmp(key, "USERNAME") == 0) 
+		else if (strcmp(key, "USERNAME") == 0) 
 		{
             		strncpy(config.username, value, sizeof(config.username));
         	}	
        		else if (strcmp(key, "PASSWORD") == 0) 
 		{
             		strncpy(config.password, value, sizeof(config.password));
-        	}*/
+        	}
     	}
 
     	fclose(fp);
@@ -80,7 +81,7 @@ void read_configuration(const char *filename) {
         	fprintf(stderr, "Missing or invalid BROKER_PORT in config file\n");
         	exit(1);
     	}
-    	/*if (strlen(config.username) == 0) 
+    	if (strlen(config.username) == 0) 
     	{
         	fprintf(stderr, "Missing USERNAME in config file\n");
         	exit(1);
@@ -89,15 +90,16 @@ void read_configuration(const char *filename) {
     	{
         	fprintf(stderr, "Missing PASSWORD in config file\n");
         	exit(1);
-    	}*/
+    	}
 }
 
 void on_connect(struct mosquitto *mosq, void *userdata, int result) 
 {
-	if (result == MOSQ_ERR_SUCCESS) {
-        printf("✅ Connected to broker successfully!\n");
-        mosquitto_subscribe(mosq, NULL, TOPIC, 1);
-	printf("Subscribed to topic: %s\n", TOPIC);
+	if (result == MOSQ_ERR_SUCCESS) 
+	{
+        	printf("✅ Connected to broker successfully!\n");
+        	mosquitto_subscribe(mosq, NULL, TOPIC, 1);
+		printf("Subscribed to topic: %s\n", TOPIC);
     	} 
 	else 
 	{
@@ -116,7 +118,12 @@ int main()
     	struct mosquitto *mosq;
     	int ret;
 	
-    	mosquitto_lib_init();
+    	ret = mosquitto_lib_init();
+	if(ret != MOSQ_ERR_SUCCESS)
+	{
+		fprintf(stderr, "❌ Failed to initialize Mosquitto library\n");
+		return 1;
+	}
 
     	mosq = mosquitto_new(NULL, true, NULL);
     	if (!mosq) 
@@ -124,7 +131,12 @@ int main()
         	fprintf(stderr, "❌ Failed to create Mosquitto instance\n");
         	return 1;
     	}
-	read_configuration("mqtt.txt");
+
+	if(!read_configuration("mqtt.txt"))
+	{
+		fprintf(stderr, "Configuration loading failed.\n");
+                exit(1);
+        }
 
 	ret = mosquitto_tls_set(mosq, CA_FILE, NULL, NULL, NULL, NULL);
     	if (ret != MOSQ_ERR_SUCCESS) 
@@ -134,7 +146,7 @@ int main()
     	}
 	mosquitto_tls_opts_set(mosq, 1, "tlsv1.2", NULL);
     	
-	//mosquitto_username_pw_set(mosq, config.username, config.password);
+	mosquitto_username_pw_set(mosq, config.username, config.password);
     	mosquitto_connect_callback_set(mosq, on_connect);
     	mosquitto_message_callback_set(mosq, on_message);
 	
