@@ -1,0 +1,10 @@
+wifi connected, but then no internet
+
+
+cat /etc/resolv.conf
+(should find nameserver 8.8.8.8)
+if its not there add it
+sudo sh -c 'echo "nameserver 8.8.8.8" > /etc/resolv.conf'
+
+check cat /etc/resolv.conf    (now should find 8.8.8.8)
+
