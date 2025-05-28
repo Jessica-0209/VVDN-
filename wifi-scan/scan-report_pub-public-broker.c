@@ -30,6 +30,10 @@ cJSON *networks_array = NULL;
 
 static int nl80211_id;
 
+const char *broker = "test.mosquitto.org";
+int port = 1883;
+
+
 int freq_to_channel(int freq) 
 {
     	if (freq >= 2412 && freq <= 2472)
@@ -209,10 +213,10 @@ void scan_report_mqtt(const char *payload)
         	return;
     	}
 
-    	mosquitto_username_pw_set(mosq, "newuser", "mqtt");
+    	//mosquitto_username_pw_set(mosq, "newuser", "mqtt");
     	mosquitto_message_callback_set(mosq, on_ack_message);
 
-    	if (mosquitto_connect(mosq, "localhost", 1883, 60) == MOSQ_ERR_SUCCESS)
+    	if (mosquitto_connect(mosq, broker, port, 60) == MOSQ_ERR_SUCCESS)
     	{
         	ack_received = 0;  
 	
@@ -235,7 +239,7 @@ void scan_report_mqtt(const char *payload)
     	}
     	else
     	{
-        	fprintf(stderr, "MQTT connection failed: %s\n", mosquitto_strerror(mosquitto_connect(mosq, "localhost", 1883, 60)));
+        	fprintf(stderr, "MQTT connection failed: %s\n", mosquitto_strerror(mosquitto_connect(mosq, broker, port, 60)));
     	}
 
     	mosquitto_disconnect(mosq);
@@ -244,13 +248,14 @@ void scan_report_mqtt(const char *payload)
 }
 
 
-void get_current_time_str(char *buffer, size_t size) {
+void get_current_time_str(char *buffer, size_t size) 
+{
     	time_t rawtime;
     	struct tm *timeinfo;
 
     	time(&rawtime);
     	timeinfo = localtime(&rawtime);
-    	strftime(buffer, size, "%Y-%m-%d %H:%M:%S", timeinfo);  // Format: YYYY-MM-DD HH:MM:SS
+    	strftime(buffer, size, "%Y-%m-%d %H:%M:%S", timeinfo);  
 }
 
 int get_ifindex_ioctl(const char *ifname)

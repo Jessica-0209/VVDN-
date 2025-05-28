@@ -3,6 +3,9 @@
 #include <string.h>
 #include <mosquitto.h>
 
+const char *broker = "test.mosquitto.org";
+int port = 1883;
+
 void on_message(struct mosquitto *mosq, void *userdata, const struct mosquitto_message *message)
 {
     	if (message->payloadlen)
@@ -25,10 +28,10 @@ int main()
         	return 1;
     	}
 
-    	mosquitto_username_pw_set(mosq, "newuser", "mqtt");
+    	//mosquitto_username_pw_set(mosq, "newuser", "mqtt");
     	mosquitto_message_callback_set(mosq, on_message);
 
-    	if (mosquitto_connect(mosq, "localhost", 1883, 60) != MOSQ_ERR_SUCCESS)
+    	if (mosquitto_connect(mosq, broker, port, 60) != MOSQ_ERR_SUCCESS)
     	{
         	fprintf(stderr, "Failed to connect to broker.\n");
         	mosquitto_destroy(mosq);
