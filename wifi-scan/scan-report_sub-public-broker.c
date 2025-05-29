@@ -28,8 +28,7 @@ int main()
         	return 1;
     	}
 
-    	//mosquitto_username_pw_set(mosq, "newuser", "mqtt");
-    	mosquitto_message_callback_set(mosq, on_message);
+      	mosquitto_message_callback_set(mosq, on_message);
 
     	if (mosquitto_connect(mosq, broker, port, 60) != MOSQ_ERR_SUCCESS)
     	{

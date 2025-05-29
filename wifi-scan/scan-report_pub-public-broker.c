@@ -128,9 +128,7 @@ static int callback_handler(struct nl_msg *msg, void *arg)
         	channel = freq_to_channel(freq);
  	}
 
-    	//printf("SSID: %-20s  BSSID: %-17s  Signal: %4.1f dBm  Channel: %2d (Freq: %d MHz)\n", ssid[0] ? ssid : "<hidden>", mac_addr, signal / 100.0, channel, freq);
-
-	if (!networks_array)
+    	if (!networks_array)
 	{
     		networks_array = cJSON_CreateArray();  
 	}
@@ -213,10 +211,10 @@ void scan_report_mqtt(const char *payload)
         	return;
     	}
 
-    	//mosquitto_username_pw_set(mosq, "newuser", "mqtt");
-    	mosquitto_message_callback_set(mosq, on_ack_message);
+       	mosquitto_message_callback_set(mosq, on_ack_message);
 
-    	if (mosquitto_connect(mosq, broker, port, 60) == MOSQ_ERR_SUCCESS)
+	int rc = mosquitto_connect(mosq, broker, port, 60);
+    	if (rc == MOSQ_ERR_SUCCESS)
     	{
         	ack_received = 0;  
 	
@@ -239,7 +237,7 @@ void scan_report_mqtt(const char *payload)
     	}
     	else
     	{
-        	fprintf(stderr, "MQTT connection failed: %s\n", mosquitto_strerror(mosquitto_connect(mosq, broker, port, 60)));
+        	fprintf(stderr, "MQTT connection failed: %s\n", mosquitto_strerror(rc));
     	}
 
     	mosquitto_disconnect(mosq);
