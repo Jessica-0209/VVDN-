@@ -1,0 +1,11 @@
+{
+	"student": {
+		"name": "Jessica",
+		"course": "Computer Science",
+		"internship": "Networking and Wi-Fi",
+		"skills": {
+			"programming languages": ["C", "Python"],
+			"networking concepts": ["network protocols", "tcp/ip", "linux OS", "wireshark"]
+		}
+	}
+}

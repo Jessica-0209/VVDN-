@@ -1,0 +1,14 @@
+{
+	"network details(wlp44s0)": [ 
+		{
+			"SSID": "VVDNDevices",
+			"IP": "172.24.12.42",
+			"connected": true
+		},
+		{
+			"SSID": "Jessica",
+			"IP": "192.168.50.10",
+			"connected": false
+		}
+	]
+}
