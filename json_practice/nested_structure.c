@@ -88,7 +88,7 @@ void parse_students(cJSON *students)
                                 {
                                         printf(" -Department: %s\n", department->valuestring);
                                 }
-				if(cJSON_IsString(skills))
+				if(cJSON_IsArray(skills))
                                 {
                                         printf(" -Skills: ");
 					print_skills(skills);
