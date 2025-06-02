@@ -1,0 +1,76 @@
+{
+	"student details": [
+		{
+			"name": "Jessica",
+			"class": "VIII A",
+			"internships": [
+				{
+					"organization": "VVDN Technologies",
+					"department": "Networking and Wi-Fi",
+					"skills_gained": ["C", "Network Protocols", "Wireshark", "Linus and MAC OS"],
+					"duration": "5 months"
+				},
+				{
+					"organization": "VaultofCodes",
+					"department": "Python Programming",
+					"skills_gained": ["Python", "numpys", "pandas", "debugging"],
+					"duration": "1 month"
+				}
+			]
+		},
+		{
+			"name": "Franklin",
+			"class": "VIII A",
+			"internships": [
+				{
+					"organization": "Epiance Software",
+					"department": "Artificial Intelligence",
+					"skills_gained": ["RAG", "Qdrant", "Vector database"],
+					"duration": "2 months"
+				},
+				{
+					"organization": "HDLC Technologies",
+					"department": "Python Programming",
+					"skills_gained": ["Python", "numpys", "pandas", "debugging"],
+					"duration": "1 month"
+				}
+			]
+		},
+		{
+                        "name": "Lillian",
+                        "class": "VIII B",
+                        "internships": [
+                                {
+                                        "organization": "VVDN Technologies",
+                                        "department": "Networking and Wi-Fi",
+                                        "skills_gained": ["C", "Network Protocols", "Wireshark", "Linus and MAC OS"],
+                                        "duration": "5 months"
+                                },
+                                {
+                                        "organization": "VaultofCodes",
+                                        "department": "Python Programming",
+                                        "skills_gained": ["Python", "numpys", "pandas", "debugging"],
+                                        "duration": "1 month"
+                                }
+                        ]
+                },
+		{
+                        "name": "Joshy",
+                        "class": "VIII B",
+                        "internships": [
+                                {
+                                        "organization": "Epiance Software",
+                                        "department": "Artificial Intelligence",
+                                        "skills_gained": ["RAG", "Qdrant", "Vector database"],
+                                        "duration": "2 months"
+                                },
+                                {
+                                        "organization": "HDLC Technologies",
+                                        "department": "Python Programming",
+                                        "skills_gained": ["Python", "numpys", "pandas", "debugging"],
+                                        "duration": "1 month"
+                                }
+                        ]
+                }
+	]
+}
